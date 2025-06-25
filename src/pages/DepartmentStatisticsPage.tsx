@@ -1,9 +1,9 @@
-import React from 'react'
+import DepartmentStatisticsTable from '../components/DepartmentStatisticsTable'
 
 const DepartmentStatisticsPage = () => {
   return (
-    <div>DepartmentStatisticsPage</div>
-  )
+    <DepartmentStatisticsTable/>
+  ) 
 }
 
 export default DepartmentStatisticsPage
