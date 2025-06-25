@@ -18,18 +18,18 @@ const DepartmentStatisticsTable = () => {
     const objDep = getDepartmentStats(employees ?? []);
     function getDepartmentStats(items: Employee[]) {
         return _.chain(items)
-        .groupBy((i) => i.department)
-        .map((value: Employee[], key: string) => ({
-          department: key,
-            size: value.length,
-            avgAge: _.round(_.meanBy(value,e=>getAge(e.birthDate)), 1),
-            avgSalary: _.round(_.meanBy(value,e=>e.salary), 1)
-        }))
-        .value();
-      }
-      function getAge(birthDate: string) {
+            .groupBy((i) => i.department)
+            .map((value: Employee[], key: string) => ({
+                department: key,
+                size: value.length,
+                avgAge: _.round(_.meanBy(value, e => getAge(e.birthDate)), 1),
+                avgSalary: _.round(_.meanBy(value, "salary"), 2)
+            }))
+            .value();
+    }
+    function getAge(birthDate: string) {
         return new Date().getFullYear() - new Date(birthDate).getFullYear();
-      }
+    }
 
     return (
         <>
@@ -63,8 +63,8 @@ const DepartmentStatisticsTable = () => {
                                         <Table.Row key={dep.department}>
                                             <Table.Cell>{dep.department}</Table.Cell>
                                             <Table.Cell>{dep.size}</Table.Cell>
-                                            <Table.Cell>{dep.avgSalary}</Table.Cell>
-                                            <Table.Cell>{dep.avgAge}</Table.Cell>
+                                            <Table.Cell>{dep.avgSalary.toFixed(2)}</Table.Cell>
+                                            <Table.Cell>{dep.avgAge.toFixed(1)}</Table.Cell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>
