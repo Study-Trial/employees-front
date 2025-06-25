@@ -15,19 +15,21 @@ const DepartmentStatisticsTable = () => {
         queryFn: () => apiClient.getAll(),
         staleTime: 3600_000
     });
-    const objDep = _.groupBy(employees, (empl) => empl.department);
-    const depSize = Object.entries(objDep).map(([key, value]) => ({
-        department: key,
-        size: value.length
-    }));
-    const depSalary = Object.entries(objDep).map(([key, value]) => ({
-        department: key,
-        salary: Math.round(value.reduce((acc: number, empl: Employee) => (acc + empl.salary), 0) / value.length)
-    }));
-    const depAge = Object.entries(objDep).map(([key, value]) => ({
-        department: key,
-        age: Math.round(value.reduce((acc: number, empl: Employee) => (acc + (2025 - (+empl.birthDate.slice(0, 4)))), 0) / value.length)
-    }));
+    const objDep = getDepartmentStats(employees ?? []);
+    function getDepartmentStats(items: Employee[]) {
+        return _.chain(items)
+        .groupBy((i) => i.department)
+        .map((value: Employee[], key: string) => ({
+          department: key,
+            size: value.length,
+            avgAge: _.round(_.meanBy(value,e=>getAge(e.birthDate)), 1),
+            avgSalary: _.round(_.meanBy(value,e=>e.salary), 1)
+        }))
+        .value();
+      }
+      function getAge(birthDate: string) {
+        return new Date().getFullYear() - new Date(birthDate).getFullYear();
+      }
 
     return (
         <>
@@ -57,12 +59,12 @@ const DepartmentStatisticsTable = () => {
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                    {depSize?.map((dep) => (
+                                    {objDep?.map((dep) => (
                                         <Table.Row key={dep.department}>
                                             <Table.Cell>{dep.department}</Table.Cell>
                                             <Table.Cell>{dep.size}</Table.Cell>
-                                            <Table.Cell>{depSalary.find(s => s.department === dep.department)?.salary}</Table.Cell>
-                                            <Table.Cell>{depAge.find(a => a.department === dep.department)?.age}</Table.Cell>
+                                            <Table.Cell>{dep.avgSalary}</Table.Cell>
+                                            <Table.Cell>{dep.avgAge}</Table.Cell>
                                         </Table.Row>
                                     ))}
                                 </Table.Body>
