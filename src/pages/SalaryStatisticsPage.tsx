@@ -12,7 +12,7 @@ const SalaryStatisticsPage = () => {
   })
 
   return (
-    <Statistics numbers={employees?.map(e => e.salary) || []} interval={5000} label={'Salary'} />
+    <Statistics numbers={employees?.map(e => e.salary) || []} interval={5000} label={'Salary'} ></Statistics>
   )
 }
 

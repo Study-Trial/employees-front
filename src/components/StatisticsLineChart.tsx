@@ -1,7 +1,7 @@
 "use client"
 
 import { Chart, useChart } from "@chakra-ui/charts"
-import { Box } from "@chakra-ui/react"
+import { HStack } from "@chakra-ui/react"
 import { FC } from "react"
 import { CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts"
 interface Props {
@@ -15,41 +15,41 @@ const StatisticsLineChart:FC<Props> = ({data, xLabel}) => {
   })
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-    <Chart.Root maxW="80vw" maxH="sm" chart={chart}>
-      <LineChart data={chart.data}>
-        <CartesianGrid stroke={chart.color("border")} vertical={false} />
-        <XAxis
-          axisLine={false}
-          dataKey={chart.key("value")}
-          stroke={chart.color("border")}
-          label={{ value: xLabel, position: "bottom" }}
-        />
-        <YAxis
-          axisLine={false}
-          tickLine={false}
-          tickMargin={10}
-          stroke={chart.color("border")}
-          label={{ value: "Employees", angle: -90, position: "insideLeft" }}
-        />
-        <Tooltip
-          animationDuration={100}
-          cursor={false}
-          content={<Chart.Tooltip />}
-        />
-        {chart.series.map((item) => (
-          <Line
-            key={item.name}
-            isAnimationActive={false}
-            dataKey={chart.key(item.name)}
-            stroke={chart.color(item.color)}
-            strokeWidth={2}
-            dot={false}
+    <HStack justifyContent={'center'}>
+      <Chart.Root maxH="sm" chart={chart} width={"80vw"}>
+        <LineChart data={chart.data}>
+          <CartesianGrid stroke={chart.color("border")} vertical={false} />
+          <XAxis
+            axisLine={false}
+            dataKey={chart.key("value")}
+            stroke={chart.color("border")}
+            label={{ value: xLabel, position: "bottom" }}
           />
-        ))}
-      </LineChart>
-    </Chart.Root>
-    </Box>
+          <YAxis
+            axisLine={false}
+            tickLine={false}
+            tickMargin={10}
+            stroke={chart.color("border")}
+            label={{ value: "Employees", position: "left", angle: -90 }}
+          />
+          <Tooltip
+            animationDuration={100}
+            cursor={false}
+            content={<Chart.Tooltip />}
+          />
+          {chart.series.map((item) => (
+            <Line
+              key={item.name}
+              isAnimationActive={false}
+              dataKey={chart.key(item.name)}
+              stroke={chart.color(item.color)}
+              strokeWidth={2}
+              dot={false}
+            />
+          ))}
+        </LineChart>
+      </Chart.Root>
+    </HStack>
   )
 }
 export default StatisticsLineChart
