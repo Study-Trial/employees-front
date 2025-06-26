@@ -1,11 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { MutationFunction, useQuery } from "@tanstack/react-query";
+import { FC } from "react";
 import { Employee } from "../model/dto-types";
 import apiClient from "../services/ApiClientJsonServer";
 import { Avatar, Box, Button, Spinner, Stack, Table, Text } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import useEmployeesMutation from "../hooks/useEmployeesMutation";
 
-const EmployeesTable = () => {
+interface Props {
+  deleteFn: MutationFunction
+}
+
+const EmployeesTable: FC<Props> = ({ deleteFn }) => {
   const {
     data: employees,
     error,
@@ -15,18 +20,10 @@ const EmployeesTable = () => {
     queryFn: () => apiClient.getAll(),
     staleTime: 3600_000
   });
-  const mutationObj = useEmployeesMutation((id: unknown) => apiClient.deleteEmployee(id as string))
-  const handleDelete = (id: string) => {
-    document.body.style.pointerEvents = 'none';
-    mutationObj.mutate(id, {
-      onSettled: () => {
-        document.body.style.pointerEvents = 'auto';
-      }
-    });
-  }
+  const mutationDel = useEmployeesMutation(deleteFn);
   return (
     <>
-      {mutationObj.isPending && (
+      {mutationDel.isPending && (
         <Box
           position="fixed"
           top="0"
@@ -43,7 +40,6 @@ const EmployeesTable = () => {
           />
         </Box>
       )}
-
       {error ? 
         <Text color={"red"} fontSize={"2xl"}>{error.message}</Text>
       : 
@@ -85,7 +81,7 @@ const EmployeesTable = () => {
                       <Table.Cell>{empl.salary}</Table.Cell>
                       <Table.Cell>{empl.birthDate}</Table.Cell>
                       <Table.Cell>
-                        <Button bg="red.500" onClick={() => handleDelete(empl.id as string)}>
+                        <Button bg="red.500" disabled={mutationDel.isPending} onClick={() => mutationDel.mutate(empl.id as string)}>
                           Delete
                         </Button>
                       </Table.Cell>

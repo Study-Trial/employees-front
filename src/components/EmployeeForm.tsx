@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Employee } from "../model/dto-types";
 import { useForm } from "react-hook-form";
 import employeesConfig from "../../config/employees-config.json"
@@ -77,12 +77,12 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
         </Field.Root>
         <Field.Root invalid={!!errors.salary}>
           <Field.Label>Salary</Field.Label>
-          <Input size="sm"
+          <Input size="sm" type="number" step={100}
           placeholder="Enter salary in NIS" {...register("salary", { 
             required: "Salary is required",
             min: { value: 5000, message: "Salary must be greater than 5000" },
             max: { value: 50000, message: "Salary must be less than 50000" },
-            pattern: { value: /^\d+$/, message: "Salary must be a number" }
+            valueAsNumber: true
           })}
           />
           <Field.ErrorText>{errors.salary?.message}</Field.ErrorText>
