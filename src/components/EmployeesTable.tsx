@@ -2,7 +2,7 @@ import { MutationFunction, useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 import { Employee } from "../model/dto-types";
 import apiClient from "../services/ApiClientJsonServer";
-import { Avatar, Box, Button, Spinner, Stack, Table, Text } from "@chakra-ui/react";
+import { Avatar, Button, HStack, Spinner, Stack, Table, Text } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import useEmployeesMutation from "../hooks/useEmployeesMutation";
 
@@ -24,21 +24,17 @@ const EmployeesTable: FC<Props> = ({ deleteFn }) => {
   return (
     <>
       {mutationDel.isPending && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          right="0"
-          bottom="0"
-          bg="rgba(0, 0, 0, 0.5)"
-          zIndex="9999"
-          display="flex"
-          alignItems="center"
+        <HStack
           justifyContent="center"
+          alignItems="center"
+          height="80vh"
+          width="100vw"
+          bg="rgba(0, 0, 0, 0.5)"
+          position="fixed"
         >
           <Spinner size="xl" color="white" 
           />
-        </Box>
+        </HStack>
       )}
       {error ? 
         <Text color={"red"} fontSize={"2xl"}>{error.message}</Text>
