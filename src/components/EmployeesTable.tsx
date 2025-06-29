@@ -1,30 +1,17 @@
-import { MutationFunction, useQuery } from "@tanstack/react-query";
-import { Employee } from "../model/dto-types";
-import apiClient from "../services/ApiClientJsonServer";
+import { MutationFunction } from "@tanstack/react-query";
 import { Avatar, Spinner, Stack, Table, Text, Button} from "@chakra-ui/react";
-import { AxiosError } from "axios";
 import { useColorModeValue } from "../components/ui/color-mode";
 import { FC } from "react";
 import useEmployeesMutation from "../hooks/useEmployeesMutation";
 import EditField from "./EditField";
-import { useSearchObject } from "../hooks/useSearchObject";
+import useTable from "../hooks/useTable";
 
 interface Props {
   deleteFn: MutationFunction,
   updateFn: MutationFunction
 }
 const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
-  const searchObject = useSearchObject();
-  console.log(searchObject);
-  const {
-    data: employees,
-    error,
-    isLoading,
-  } = useQuery<Employee[], AxiosError>({
-    queryKey: ["employees", searchObject],
-    queryFn: () => apiClient.getAll(searchObject),
-    staleTime: 3600_000
-  });
+  const {data: employees, error, isLoading} = useTable();
   const mutationDel = useEmployeesMutation(deleteFn);
   const mutationUpdate = useEmployeesMutation(updateFn);
   const bg = useColorModeValue("red.500", "red.200");

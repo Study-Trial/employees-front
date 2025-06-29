@@ -15,7 +15,7 @@ const DepartmentSelector: FC = () => {
       <Menu.Root onExitComplete={() => setIsOpen(false)}>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm" marginBottom={3} onClick={() => setIsOpen(!isOpen)}>
-         { selectedDepartment || "Departments"}
+         { selectedDepartment || "All Departments"}
           {isOpen ? <MotionComponent duration={duration}>
             <FaChevronUp></FaChevronUp>
           </MotionComponent> :<FaChevronDown></FaChevronDown>}
