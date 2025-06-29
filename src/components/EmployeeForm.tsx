@@ -11,6 +11,7 @@ import {
   NativeSelect,
   Button,
 } from "@chakra-ui/react";
+
 interface Props {
   submitter: (empl: Employee) => void;
 }
@@ -28,6 +29,10 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
     reset()
     alert("Employee successfully added")
   }
+  const thisYear = new Date().getFullYear();
+  const minYear = thisYear - employeesConfig.maxAge;
+  const maxYear = thisYear - employeesConfig.minAge;
+
   return (
     <Stack  as="form" align="center" onSubmit={handleSubmit(onSubmit)}>
       <SimpleGrid
@@ -67,10 +72,11 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
         </Field.Root>
         <Field.Root invalid={!!errors.birthDate} >
           <Field.Label>Birth Date</Field.Label>
-          <Input size="sm" 
-          placeholder="Enter date (yyyy-mm-dd)" {...register("birthDate", { 
+          <Input size="sm" type="date"
+          placeholder="Select Birth Date" {...register("birthDate", { 
             required: "Birth Date is required",
-            pattern: { value: /^\d{4}-\d{2}-\d{2}$/, message: "Birth Date must be in format YYYY-MM-DD" }
+            min: { value: `${minYear}-01-01`, message: `Birth Date must be no more than ${employeesConfig.maxAge} years ago` },
+            max: { value: `${maxYear}-01-01`, message: `Birth Date must be at least ${employeesConfig.minAge} years ago` }
           })}
           />
           <Field.ErrorText>{errors.birthDate?.message}</Field.ErrorText>
@@ -80,8 +86,8 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
           <Input size="sm" type="number" step={100}
           placeholder="Enter salary in NIS" {...register("salary", { 
             required: "Salary is required",
-            min: { value: 5000, message: "Salary must be greater than 5000" },
-            max: { value: 50000, message: "Salary must be less than 50000" },
+            min: { value: employeesConfig.minSalary, message: `Salary must be greater than ${employeesConfig.minSalary} NIS` },
+            max: { value: employeesConfig.maxSalary, message: `Salary must be less than ${employeesConfig.maxSalary} NIS` },
             valueAsNumber: true
           })}
           />
