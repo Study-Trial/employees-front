@@ -22,9 +22,28 @@ const axiosIstance = axios.create({
         return res.data
     }
     async getAll(searchObject?: SearchObject): Promise<Employee[]> {
-        const res = await axiosIstance.get<Employee[]>("/");
-        return res.data;
+        const params: any = {};
+        if (searchObject?.department) {
+            params.department = searchObject.department;
+        }
+        if (searchObject?.minSalary) {
+            params.salary_gte = searchObject.minSalary;
+        }
+        if (searchObject?.maxSalary) {
+            params.salary_lte = searchObject.maxSalary;
+        }
+        const res = await axiosIstance.get<Employee[]>("/", { params });
+        let employees = res.data;
+        const currentYear = new Date().getFullYear();
+        if (searchObject?.minAge) {
+            employees = employees.filter(e => currentYear - +e.birthDate.slice(0,4) >= searchObject.minAge!);
+        }
+        if (searchObject?.maxAge) {
+            employees = employees.filter(e => currentYear - +e.birthDate.slice(0,4) <= searchObject.maxAge!);
+        }
+        return employees;
     }
+    
     
 }
 const apiClient = new ApiClientJsonServer();

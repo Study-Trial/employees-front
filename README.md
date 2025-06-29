@@ -1,9 +1,15 @@
-# HW #45 Definition
-## Complete EmployeeForm component
-### Add three additional Input fields according to example from https://chakra-ui.com/docs/components/input#hook-form 
-### Common sense UI design for portrait, landscape and laptop layouts
-### Make sure that hitting the button "Save" triggers adding Employee
-#### Home page should contain the added Employee object
-## Add new column in the EmployeesTable
-### Appropriate Cell data for this column should contain button DELETE (background color - red)
-#### Hitting this button should trigger deleting the appropriate Employee with following removing row from the table
+# HW #46 Definition
+## Filtering of Employee queries
+### updating method getAll of ApiClientJsonServer taking into consideration searchObject containing filter values
+### Fill the stub of the DepartmentSelector component
+#### Similar to https://github.com/java-60TelRan/games-hub/blob/main/src/components/GenreSelector.tsx
+#### Using useEmployeeFilters with the selectors for department and setDepartment fields
+### Fill the stub of the SalaryFilter component
+#### Look & feel similar to EditField component having been written at the class #46
+#### Using useEmployeeFilters with the selectors for salaryFrom, salaryTo, setSalaryFrom, setSalaryTo
+### Fill the stub of the AgeFilter component
+#### Look & feel similar to SalaryFilter (a reusable additional component maybe introduced for DRY) 
+#### Using useEmployeeFilters with the selectors for ageFrom, ageTo, setAgeFrom, setAgeTo
+### updating EmployeesTable component taking into consideration filters 
+#### consider applying useEmployeeFilters state management hook
+#### consider  useQuery call with updated queryFn
