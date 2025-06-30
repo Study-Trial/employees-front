@@ -25,8 +25,8 @@ const [isAlert, setIsAlert] = useState<boolean>(false);
   });
 
   return (
-    <form onSubmit={onSubmit}>
-      <Stack gap="4" align="flex-start" maxW="sm">
+    <form style={{justifyContent: "center", display: "flex", alignItems: "center"}} onSubmit={onSubmit}>
+      <Stack gap="4" align="center" maxW="sm">
         <Field.Root invalid={!!errors.email}>
           <Field.Label>Email</Field.Label>
           <Input {...register("email", { required: true })} onFocus={() => {resetField("email"); setIsAlert(false)}}/>

@@ -7,13 +7,15 @@ import { useColorModeValue } from "../components/ui/color-mode";
 import { FC } from "react";
 import useEmployeesMutation from "../hooks/useEmployeesMutation";
 import EditField from "./EditField";
-import useEmployeeFilters from "../state-management/store";
+import useEmployeeFilters, { useAuthData } from "../state-management/store";
 import _ from 'lodash'
 interface Props {
   deleteFn: MutationFunction,
   updateFn: MutationFunction
 }
 const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
+  const {userData} = useAuthData();
+  const role = userData?.role;
   const {department, salaryFrom, salaryTo, ageFrom, ageTo} = useEmployeeFilters();
   let searchObj: SearchObject | undefined = {};
   department && (searchObj.department = department);
@@ -82,16 +84,19 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                       </Table.Cell>
                       <Table.Cell >{empl.fullName}</Table.Cell>
                       <Table.Cell>
-                        <EditField field="department" oldValue={empl.department} submitter={(data)=>
-            mutationUpdate.mutate({id: empl.id, fields: data})}/>
+                        {role === "admin" ? <EditField field="department" oldValue={empl.department} 
+                        submitter={(data)=>mutationUpdate.mutate({id: empl.id, fields: data})}/>
+                         : <Text>{empl.department}</Text>}
                       </Table.Cell>
                       <Table.Cell hideBelow="sm">
-                        <EditField field="salary" oldValue={empl.salary} submitter={(data)=>
+                        {role === "admin" ? <EditField field="salary" oldValue={empl.salary} submitter={(data)=>
                           mutationUpdate.mutate({id: empl.id, fields: data})}/>
+                         : <Text>{empl.salary}</Text>}
                       </Table.Cell>
                       <Table.Cell hideBelow="md">{empl.birthDate}</Table.Cell>
                       <Table.Cell >
-                        <Button size="xs" background={bg} onClick={() => mutationDel.mutate(empl.id)} disabled={mutationDel.isPending}>Delete</Button>
+                        {role === "admin" ? <Button size="xs" background={bg} onClick={() => mutationDel.mutate(empl.id)} disabled={mutationDel.isPending}>Delete</Button>
+                         : <Text>{empl.birthDate}</Text>}
                       </Table.Cell>
                     </Table.Row>
                   ))}
