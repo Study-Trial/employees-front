@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { Employee } from "../model/dto-types";
 import { useForm } from "react-hook-form";
 import employeesConfig from "../../config/employees-config.json"
@@ -58,7 +58,7 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
         <Field.Root invalid={!!errors.salary}width="80%">
           <Field.Label>Salary</Field.Label>
           <Input {...register("salary",{required: true, valueAsNumber: true, min: employeesConfig.minSalary,
-             max: employeesConfig.maxSalary})}type="number" size="sm" placeholder={`enter salary [${employeesConfig.minSalary}-${employeesConfig.maxSalary}]`}/>
+             max: employeesConfig.maxSalary})}type="number" size="sm" placeholder={`enetr salary [${employeesConfig.minSalary}-${employeesConfig.maxSalary}]`}/>
           <Field.ErrorText>{`Salary must be in the range [${employeesConfig.minSalary}-${employeesConfig.maxSalary}]`}</Field.ErrorText>
         </Field.Root>
       </SimpleGrid>

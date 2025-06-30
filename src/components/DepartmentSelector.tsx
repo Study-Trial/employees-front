@@ -1,21 +1,23 @@
-import { Menu, Button, Portal } from '@chakra-ui/react'
+import { Menu, Button, Portal} from '@chakra-ui/react'
 import { FC, useState } from 'react'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import MotionComponent from './MotionComponent';
+import {departments} from '../../config/employees-config.json'
 import useEmployeeFilters from '../state-management/store';
-import employeesConfig from '../../config/employees-config.json'
 
+const duration=0.7;
 const DepartmentSelector: FC = () => {
    const [isOpen, setIsOpen] =  useState<boolean>(false);
-   const selectedDepartment = useEmployeeFilters(s => s.department);
-   const onSelectDepartment = useEmployeeFilters(s => s.setDepartment);
-   const duration=0.7;
-
+   const department = useEmployeeFilters(s=>s.department);
+   const setDepartment = useEmployeeFilters(s=>s.setDepartment);
+   
   return (
-      <Menu.Root onExitComplete={() => setIsOpen(false)}>
+    <>
+    
+        <Menu.Root onExitComplete={() => setIsOpen(false)}>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm" marginBottom={3} onClick={() => setIsOpen(!isOpen)}>
-         { selectedDepartment || "All Departments"}
+         { department || "All Departments"}
           {isOpen ? <MotionComponent duration={duration}>
             <FaChevronUp></FaChevronUp>
           </MotionComponent> :<FaChevronDown></FaChevronDown>}
@@ -25,15 +27,17 @@ const DepartmentSelector: FC = () => {
         <Menu.Positioner>
           <MotionComponent duration={duration}>
             <Menu.Content>
-            <Menu.Item key={"department"} value={""} cursor="pointer"
-               onClick={() => {onSelectDepartment(null); setIsOpen(false)}}>All Departments</Menu.Item>
-              {employeesConfig.departments?.map(d => <Menu.Item key={d} value={d} cursor="pointer"
-               onClick={() => {onSelectDepartment(d); setIsOpen(false)}}>{d}</Menu.Item>)}
+            <Menu.Item key={"department"} value={""}
+               onClick={() => {setDepartment(null); setIsOpen(false)}}>All Departments</Menu.Item>
+              {departments.map(d => <Menu.Item key={d} value={d}
+               onClick={() => {setDepartment(d); setIsOpen(false)}}>{d}</Menu.Item>)}
             </Menu.Content>
           </MotionComponent>
         </Menu.Positioner>
       </Portal>
     </Menu.Root>
+    </>
+    
   )
 }
 

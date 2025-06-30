@@ -8,6 +8,8 @@ const Nav = () => {
     <HStack justifyContent={"space-between"} marginLeft={"4vw"}>
         <RouterLink to="/"> <Text>Home</Text></RouterLink>
         <RouterLink to="/add"> <Text>Add Employee</Text></RouterLink>
+        <RouterLink to="/login"><Text>Login</Text></RouterLink>
+        <RouterLink to="/logout"><Text>Logout</Text></RouterLink>
         <StatisticsSelector></StatisticsSelector>
         <ColorModeButton></ColorModeButton>
     </HStack>

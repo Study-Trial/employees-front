@@ -6,9 +6,9 @@ export const useSearchObject = (): SearchObject => {
   
   return {
     department: filters.department || undefined,
-    minSalary: filters.salaryFrom || undefined,
-    maxSalary: filters.salaryTo || undefined,
-    minAge: filters.ageFrom || undefined,
-    maxAge: filters.ageTo || undefined
+    salaryFrom: filters.salaryFrom || undefined,
+    salaryTo: filters.salaryTo || undefined,
+    ageFrom: filters.ageFrom || undefined,
+    ageTo: filters.ageTo || undefined
   };
 };

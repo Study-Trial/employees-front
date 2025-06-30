@@ -1,50 +1,60 @@
 import { SearchObject, Employee } from "../model/dto-types";
+import { getAge } from "../util/functions";
 import ApiClient, { Updater } from "./ApiClient";
 import axios from "axios";
-const axiosIstance = axios.create({
-    baseURL: "http://localhost:3000/employees"
-})
- class ApiClientJsonServer implements ApiClient {
-    async getEmployee(id: string): Promise<Employee> {
-         const res = await axiosIstance.get<Employee>(`/${id}`);
-         return res.data;
+const BASE_URL = "http://localhost:3000/employees"
+let axiosIstance = axios.create({
+  baseURL: BASE_URL
+});
+class ApiClientJsonServer implements ApiClient {
+  setToken(token: string): void {
+      axiosIstance = axios.create({
+           baseURL: BASE_URL,
+           headers: {
+            Authorization: "Bearer " + token
+           } 
+      })
+  }
+  async getEmployee(id: string): Promise<Employee> {
+    const res = await axiosIstance.get<Employee>(`/${id}`);
+    return res.data;
+  }
+  async addEmployee(empl: Employee): Promise<Employee> {
+    const res = await axiosIstance.post<Employee>("/", empl);
+    return res.data;
+  }
+  async deleteEmployee(id: string): Promise<Employee> {
+    const res = await axiosIstance.delete<Employee>(`/${id}`);
+    return res.data;
+  }
+  async updateEmployee(updater: Updater): Promise<Employee> {
+    const res = await axiosIstance.patch<Employee>(
+      `/${updater.id}`,
+      updater.fields
+    );
+    return res.data;
+  }
+  async getAll(searchObject?: SearchObject): Promise<Employee[]> {
+    let res;
+    let url = "/";
+    let  salaryFrom, salaryTo, ageFrom, ageTo;
+    if (searchObject && searchObject.department) {
+      url = `?department=${searchObject.department}`;
     }
-    async addEmployee(empl: Employee): Promise<Employee> {
-        const res = await axiosIstance.post<Employee>('/', empl);
-        return res.data;
-    }
-    async deleteEmployee(id: string): Promise<Employee> {
-        const res = await axiosIstance.delete<Employee>(`/${id}`);
-        return res.data;
-    }
-    async updateEmployee(updater: Updater): Promise<Employee> {
-        const res = await axiosIstance.patch<Employee>(`/${updater.id}`, updater.fields);
-        return res.data
-    }
-    async getAll(searchObject?: SearchObject): Promise<Employee[]> {
-        const params: any = {};
-        if (searchObject?.department) {
-            params.department = searchObject.department;
-        }
-        if (searchObject?.minSalary) {
-            params.salary_gte = searchObject.minSalary;
-        }
-        if (searchObject?.maxSalary) {
-            params.salary_lte = searchObject.maxSalary;
-        }
-        const res = await axiosIstance.get<Employee[]>("/", { params });
-        let employees = res.data;
-        const currentYear = new Date().getFullYear();
-        if (searchObject?.minAge) {
-            employees = employees.filter(e => currentYear - +e.birthDate.slice(0,4) >= searchObject.minAge!);
-        }
-        if (searchObject?.maxAge) {
-            employees = employees.filter(e => currentYear - +e.birthDate.slice(0,4) <= searchObject.maxAge!);
-        }
-        return employees;
-    }
-    
-    
+    searchObject && ({ salaryFrom, salaryTo, ageFrom, ageTo} = searchObject)
+    salaryFrom = salaryFrom ?? 0;
+    salaryTo = salaryTo ?? Number.MAX_SAFE_INTEGER;
+    ageFrom = ageFrom ?? 0;
+    ageTo = ageTo ?? Number.MAX_SAFE_INTEGER;
+    res = (await axiosIstance.get<Employee[]>(url)).data;
+    res = res.filter(e => {
+        const age = getAge(e.birthDate);
+        const salary = e.salary;
+        return age >= ageFrom && age <= ageTo && salary >= salaryFrom && salary <= salaryTo
+    })
+    return res
+  }
 }
+
 const apiClient = new ApiClientJsonServer();
-export default apiClient
+export default apiClient;
