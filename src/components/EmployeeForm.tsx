@@ -20,10 +20,11 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<Employee>();
   return (
-    <Stack as="form" onSubmit={handleSubmit(data => submitter(data))} height="80vh"  justifyContent={"space-around"}>
+    <Stack as="form" onSubmit={handleSubmit(data => {submitter(data)})} height="80vh"  justifyContent={"space-around"}>
       <SimpleGrid
         columns={{
           base: 1,
@@ -63,7 +64,8 @@ const EmployeeForm: FC<Props> = ({ submitter }) => {
         </Field.Root>
       </SimpleGrid>
       <HStack justifyContent={'space-around'} >
-        <Button type="submit" colorPalette={"blue"} variant="subtle">Save</Button>
+        <Button type="submit" colorPalette={"blue"} variant="subtle" 
+        onClick={()=>{setValue("userId", "ADMIN")}}>Save</Button>
         <Button type="reset" colorPalette={"blue"} variant="subtle">Reset</Button>
       </HStack>
     </Stack>

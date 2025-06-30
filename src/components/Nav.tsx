@@ -7,7 +7,6 @@ import { useAuthData } from '../state-management/store'
 const Nav = () => {
   const {userData} = useAuthData();
   const role = userData?.role;
-  console.log(userData);
   return (
     <>
     {userData ? <HStack justifyContent={"space-around"} marginLeft={"4vw"} p={"1rem"}>

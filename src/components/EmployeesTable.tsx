@@ -64,7 +64,7 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
             >
               <Table.Root size="sm" stickyHeader>
                 <Table.Header>
-                  <Table.Row bg="bg.subtle" zIndex="0">
+                  <Table.Row bg="bg.subtle" zIndex="2">
                     <Table.ColumnHeader hideBelow={"md"}></Table.ColumnHeader>
                     <Table.ColumnHeader >Full Name</Table.ColumnHeader>
                     <Table.ColumnHeader>Department</Table.ColumnHeader>
@@ -73,7 +73,7 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                     <Table.ColumnHeader ></Table.ColumnHeader>
                   </Table.Row>
                 </Table.Header>
-                <Table.Body  zIndex="-100">
+                <Table.Body  zIndex="1">
                   {employees?.map((empl) => (
                     <Table.Row key={empl.id} >
                       <Table.Cell hideBelow={"md"}>
