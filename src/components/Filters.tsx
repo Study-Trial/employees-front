@@ -1,15 +1,15 @@
 import { HStack } from '@chakra-ui/react'
 import DepartmentSelector from './DepartmentSelector'
-import SalaryFilter from './SalaryFilter'
-import AgeFilter from './AgeFilter'
+import SliderFilter from './SliderFilter'
+import employeesConfig from '../../config/employees-config.json'
 
 
 const Filters = () => {
   return (
     <HStack justifyContent={"space-around"} p={"0 10vw"}>
         <DepartmentSelector/>
-        <SalaryFilter/>
-        <AgeFilter/>
+        <SliderFilter min={employeesConfig.minSalary} max={employeesConfig.maxSalary} criteria="salary"/>
+        <SliderFilter min={employeesConfig.minAge} max={employeesConfig.maxAge} criteria="age"/>
     </HStack>
   )
 }

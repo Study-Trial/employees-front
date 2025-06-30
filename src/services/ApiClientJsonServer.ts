@@ -1,5 +1,7 @@
 import { SearchObject, Employee } from "../model/dto-types";
 import ApiClient, { Updater } from "./ApiClient";
+import { getAge } from "../util/functions";
+
 import axios from "axios";
 const axiosIstance = axios.create({
     baseURL: "http://localhost:3000/employees"
@@ -34,12 +36,11 @@ const axiosIstance = axios.create({
         }
         const res = await axiosIstance.get<Employee[]>("/", { params });
         let employees = res.data;
-        const currentYear = new Date().getFullYear();
         if (searchObject?.minAge) {
-            employees = employees.filter(e => currentYear - +e.birthDate.slice(0,4) >= searchObject.minAge!);
+            employees = employees.filter(e => getAge(e.birthDate) >= searchObject.minAge!);
         }
         if (searchObject?.maxAge) {
-            employees = employees.filter(e => currentYear - +e.birthDate.slice(0,4) <= searchObject.maxAge!);
+            employees = employees.filter(e => getAge(e.birthDate) <= searchObject.maxAge!);
         }
         return employees;
     }
