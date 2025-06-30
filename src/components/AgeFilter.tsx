@@ -17,7 +17,7 @@ const AgeFilter:FC= () => {
   const duration = 0.7;
 
   return (
-    <Menu.Root onExitComplete={() => setIsOpen(false)}>
+    <Menu.Root open={isOpen} onOpenChange={(details) => setIsOpen(details.open)}>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm" marginBottom={3} onClick={() => setIsOpen(!isOpen)}>
           {`Age: ${selectedMinAge || employeesConfig.minAge} - 

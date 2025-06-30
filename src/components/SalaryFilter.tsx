@@ -16,14 +16,14 @@ const SalaryFilter: FC = () => {
   const duration = 0.7;
 
   return (
-    <Menu.Root onExitComplete={() => setIsOpen(false)}>
+    <Menu.Root open={isOpen} onOpenChange={(details) => setIsOpen(details.open)}>
       <Menu.Trigger asChild>
         <Button variant="outline" size="sm" marginBottom={3} onClick={() => setIsOpen(!isOpen)}>
           {`Salary: ${selectedMinSalary || employeesConfig.minSalary} - 
           ${selectedMaxSalary || employeesConfig.maxSalary}`}
           {isOpen ? <MotionComponent duration={duration}>
             <FaChevronUp />
-          </MotionComponent> : <FaChevronDown />}
+          </MotionComponent> : <FaChevronDown></FaChevronDown>}
         </Button>
       </Menu.Trigger>
       <Portal>
@@ -61,13 +61,13 @@ const SalaryFilter: FC = () => {
                   </HStack>
                 </Box>
                 
-                <HStack gap={2} justify="center">
-                  <Button size="sm" colorScheme="blue" onClick={() => {
+                <HStack gap={2} justify="center" >
+                  <Button type="submit" size="sm" colorScheme="blue" onClick={() => {
                     onSelectMinSalary(sliderValues[0]);
                     onSelectMaxSalary(sliderValues[1]);
                     setIsOpen(false);
                   }}>Apply</Button>
-                  <Button size="sm" variant="outline" onClick={() => {
+                  <Button type="reset" size="sm" variant="outline" onClick={() => {
                     setSliderValues([employeesConfig.minSalary, employeesConfig.maxSalary]);
                   }}>Reset</Button>
                 </HStack>

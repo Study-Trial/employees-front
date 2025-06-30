@@ -25,9 +25,9 @@ const DepartmentSelector: FC = () => {
         <Menu.Positioner>
           <MotionComponent duration={duration}>
             <Menu.Content>
-            <Menu.Item key={"department"} value={""}
+            <Menu.Item key={"department"} value={""} cursor="pointer"
                onClick={() => {onSelectDepartment(null); setIsOpen(false)}}>All Departments</Menu.Item>
-              {employeesConfig.departments?.map(d => <Menu.Item key={d} value={d}
+              {employeesConfig.departments?.map(d => <Menu.Item key={d} value={d} cursor="pointer"
                onClick={() => {onSelectDepartment(d); setIsOpen(false)}}>{d}</Menu.Item>)}
             </Menu.Content>
           </MotionComponent>
