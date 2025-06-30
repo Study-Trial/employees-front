@@ -20,7 +20,7 @@ class ApiClientJsonServer implements ApiClient {
     return res.data;
   }
   async addEmployee(empl: Employee): Promise<Employee> {
-    const res = await axiosIstance.post<Employee>("/", empl);
+    const res = await axiosIstance.post<Employee>("/", {...empl, userId: "ADMIN"});
     return res.data;
   }
   async deleteEmployee(id: string): Promise<Employee> {
