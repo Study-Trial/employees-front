@@ -69,7 +69,7 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                     <Table.ColumnHeader>Department</Table.ColumnHeader>
                     <Table.ColumnHeader hideBelow="sm">Salary</Table.ColumnHeader>
                     <Table.ColumnHeader hideBelow="md">Birthday</Table.ColumnHeader>
-                    <Table.ColumnHeader ></Table.ColumnHeader>
+                    {role === "admin" && <Table.ColumnHeader ></Table.ColumnHeader>}
                   </Table.Row>
                 </Table.Header>
                 <Table.Body  zIndex="1">
@@ -85,18 +85,19 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                       <Table.Cell>
                         {role === "admin" ? <EditField field="department" oldValue={empl.department} 
                         submitter={(data)=>mutationUpdate.mutate({id: empl.id, fields: data})}/>
-                         : <Text>{empl.department}</Text>}
+                         : <>{empl.department}</>}
                       </Table.Cell>
                       <Table.Cell hideBelow="sm">
                         {role === "admin" ? <EditField field="salary" oldValue={empl.salary} submitter={(data)=>
                           mutationUpdate.mutate({id: empl.id, fields: data})}/>
-                         : <Text>{empl.salary}</Text>}
+                         : <>{empl.salary}</>}
                       </Table.Cell>
                       <Table.Cell hideBelow="md">{empl.birthDate}</Table.Cell>
-                      <Table.Cell >
-                        {role === "admin" ? <Button size="xs" background={bg} onClick={() => mutationDel.mutate(empl.id)} disabled={mutationDel.isPending}>Delete</Button>
-                         : <Text>{empl.birthDate}</Text>}
-                      </Table.Cell>
+                      {role === "admin" && <Table.Cell>
+                        <Button size="xs" background={bg} 
+                        onClick={() => mutationDel.mutate(empl.id)} 
+                        disabled={mutationDel.isPending}>Delete</Button>
+                      </Table.Cell>}
                     </Table.Row>
                   ))}
                 </Table.Body>

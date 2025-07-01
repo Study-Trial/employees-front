@@ -17,7 +17,6 @@ const Nav = () => {
     </HStack>
     : <HStack justifyContent={"space-around"} marginLeft={"4vw"} p={"1rem"}>
         <RouterLink to="/login"><Text>Login</Text></RouterLink>
-        <RouterLink to="/logout"><Text>Logout</Text></RouterLink>
     </HStack>
     }
     </>
