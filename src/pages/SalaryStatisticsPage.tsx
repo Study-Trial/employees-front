@@ -3,8 +3,12 @@ import { AxiosError } from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import apiClient from '../services/ApiClientJsonServer'
 import Statistics from '../components/Statistics'
+import { useAuthData } from '../state-management/store'
+import { Navigate } from 'react-router-dom'
 
 const SalaryStatisticsPage = () => {
+  const {userData} = useAuthData();
+  const role = userData?.role;
   const {data: employees} = useQuery<Employee[], AxiosError>({
     queryKey: ["employees"],
     queryFn: () => apiClient.getAll(),
@@ -12,7 +16,11 @@ const SalaryStatisticsPage = () => {
   })
 
   return (
+    <>
+    {role ?
     <Statistics numbers={employees?.map(e => e.salary) || []} interval={5000} label={'Salary'} ></Statistics>
+    : <Navigate to="/login" />}
+    </>
   )
 }
 

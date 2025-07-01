@@ -7,14 +7,15 @@ import DepartmentStatisticsPage from "../pages/DepartmentStatisticsPage";
 import Layout from "../pages/Layout";
 import LoginPage from "../pages/LoginPage";
 import LogoutPage from "../pages/LogoutPage";
-
+import { Navigate } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { path: "login", element: <LoginPage /> },
+      { index: true, element: <Navigate to="/home"/> },
+      { path: "login", element: <LoginPage />},
       { path: "add", element: <AddEmployeePage /> },
       { path: "home", element: <HomePage /> },
       { path: "logout", element: <LogoutPage /> },
