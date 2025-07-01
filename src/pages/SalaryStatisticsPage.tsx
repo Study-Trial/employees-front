@@ -7,8 +7,7 @@ import { useAuthData } from '../state-management/store'
 import { Navigate } from 'react-router-dom'
 
 const SalaryStatisticsPage = () => {
-  const {userData} = useAuthData();
-  const role = userData?.role;
+  const role = useAuthData(s => s.userData?.role);
   const {data: employees} = useQuery<Employee[], AxiosError>({
     queryKey: ["employees"],
     queryFn: () => apiClient.getAll(),

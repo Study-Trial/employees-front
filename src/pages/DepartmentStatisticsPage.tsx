@@ -15,8 +15,7 @@ export interface DepartmentInfo {
   avgAge: number;
 }
 const DepartmentStatisticsPage = () => {
-  const {userData} = useAuthData();
-  const role = userData?.role;
+  const role = useAuthData(s => s.userData?.role);
   const { data: employees } = useQuery<Employee[], AxiosError>({
     queryKey: ["employees"],
     queryFn: () => apiClient.getAll(),

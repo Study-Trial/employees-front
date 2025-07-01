@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Employee } from "../model/dto-types";
 import { useForm } from "react-hook-form";
 import employeesConfig from "../../config/employees-config.json"

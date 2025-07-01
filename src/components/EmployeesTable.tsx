@@ -14,8 +14,7 @@ interface Props {
   updateFn: MutationFunction
 }
 const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
-  const {userData} = useAuthData();
-  const role = userData?.role;
+  const role = useAuthData(s => s.userData?.role);
   const {department, salaryFrom, salaryTo, ageFrom, ageTo} = useEmployeeFilters();
   let searchObj: SearchObject | undefined = {};
   department && (searchObj.department = department);

@@ -6,8 +6,7 @@ import { useAuthData } from "../state-management/store"
 import { Navigate } from "react-router-dom"
 
 const AddEmployeePage = () => {
-  const {userData} = useAuthData();
-  const role = userData?.role;
+  const role = useAuthData(s => s.userData?.role);
   const mutationObj = useEmployeesMutation((empl) => apiClient.addEmployee(empl as Employee))
   return (
     <>

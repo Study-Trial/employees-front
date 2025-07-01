@@ -5,11 +5,10 @@ import StatisticsSelector from '../pages/StatisticsSelector'
 import { useAuthData } from '../state-management/store'
 
 const Nav = () => {
-  const {userData} = useAuthData();
-  const role = userData?.role;
+  const role = useAuthData(s => s.userData?.role);
   return (
     <>
-    {userData ? <HStack justifyContent={"space-around"} marginLeft={"4vw"} p={"1rem"}>
+    {role ? <HStack justifyContent={"space-around"} marginLeft={"4vw"} p={"1rem"}>
         <RouterLink to="/home"> <Text>Home</Text></RouterLink>
         {role === "admin" && <RouterLink to="/add"> <Text>Add Employee</Text></RouterLink>}
         <StatisticsSelector></StatisticsSelector>
