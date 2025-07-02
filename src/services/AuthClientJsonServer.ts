@@ -1,5 +1,6 @@
 import AuthClient, {LoginData, UserData} from "./AuthClient";
 import axios from 'axios';
+import { Axios } from "axios";
 interface LoginResponse {
     "accessToken": string,
     "user": {

@@ -14,8 +14,8 @@ interface Props {
   updateFn: MutationFunction
 }
 const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
-  const role = useAuthData(s => s.userData?.role);
   const {department, salaryFrom, salaryTo, ageFrom, ageTo} = useEmployeeFilters();
+  const userData = useAuthData(s => s.userData);
   let searchObj: SearchObject | undefined = {};
   department && (searchObj.department = department);
   salaryFrom && (searchObj.salaryFrom = salaryFrom);
@@ -36,14 +36,15 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
     queryFn: () => apiClient.getAll(searchObj),
     staleTime: 3600_000
   });
+  if (error) {
+    throw error;
+  }
   const mutationDel = useEmployeesMutation(deleteFn);
   const mutationUpdate = useEmployeesMutation(updateFn);
   const bg = useColorModeValue("red.500", "red.200");
   return (
     <>
-      {error ? 
-        <Text color={"red"} fontSize={"2xl"}>{error.message}</Text>
-      : 
+     
         <>
           {isLoading && <Spinner />}
           <Stack
@@ -63,16 +64,16 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
             >
               <Table.Root size="sm" stickyHeader>
                 <Table.Header>
-                  <Table.Row bg="bg.subtle" zIndex="2">
+                  <Table.Row bg="bg.subtle" zIndex="0">
                     <Table.ColumnHeader hideBelow={"md"}></Table.ColumnHeader>
                     <Table.ColumnHeader >Full Name</Table.ColumnHeader>
                     <Table.ColumnHeader>Department</Table.ColumnHeader>
                     <Table.ColumnHeader hideBelow="sm">Salary</Table.ColumnHeader>
                     <Table.ColumnHeader hideBelow="md">Birthday</Table.ColumnHeader>
-                    {role === "admin" && <Table.ColumnHeader ></Table.ColumnHeader>}
+                    {userData?.role === "ADMIN" && <Table.ColumnHeader></Table.ColumnHeader>}
                   </Table.Row>
                 </Table.Header>
-                <Table.Body  zIndex="1">
+                <Table.Body  zIndex="-100">
                   {employees?.map((empl) => (
                     <Table.Row key={empl.id} >
                       <Table.Cell hideBelow={"md"}>
@@ -83,20 +84,16 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                       </Table.Cell>
                       <Table.Cell >{empl.fullName}</Table.Cell>
                       <Table.Cell>
-                        {role === "admin" ? <EditField field="department" oldValue={empl.department} 
-                        submitter={(data)=>mutationUpdate.mutate({id: empl.id, fields: data})}/>
-                         : <>{empl.department}</>}
+                       {userData?.role === "ADMIN" ? <EditField field="department" oldValue={empl.department} submitter={(data)=>
+            mutationUpdate.mutate({id: empl.id, fields: data})}/>: empl.department}
                       </Table.Cell>
                       <Table.Cell hideBelow="sm">
-                        {role === "admin" ? <EditField field="salary" oldValue={empl.salary} submitter={(data)=>
-                          mutationUpdate.mutate({id: empl.id, fields: data})}/>
-                         : <>{empl.salary}</>}
+                        {userData?.role === "ADMIN" ? <EditField field="salary" oldValue={empl.salary} submitter={(data)=>
+                          mutationUpdate.mutate({id: empl.id, fields: data})}/>: empl.salary}
                       </Table.Cell>
                       <Table.Cell hideBelow="md">{empl.birthDate}</Table.Cell>
-                      {role === "admin" && <Table.Cell>
-                        <Button size="xs" background={bg} 
-                        onClick={() => mutationDel.mutate(empl.id)} 
-                        disabled={mutationDel.isPending}>Delete</Button>
+                     { userData?.role === "ADMIN" && <Table.Cell >
+                        <Button size="xs" background={bg} onClick={() => mutationDel.mutate(empl.id)} disabled={mutationDel.isPending}>Delete</Button>
                       </Table.Cell>}
                     </Table.Row>
                   ))}
@@ -105,7 +102,6 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
             </Table.ScrollArea>
           </Stack>
         </>
-      }
     </>
   );
 };

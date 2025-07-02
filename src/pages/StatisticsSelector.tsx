@@ -26,7 +26,7 @@ const StatisticsSelector: FC = () => {
   return (
     <>
     
-        <Menu.Root  onExitComplete={() => setIsOpen(false)}>
+        <Menu.Root onExitComplete={() => setIsOpen(false)}>
       <Menu.Trigger asChild>
         <Button fontWeight={isActive ? "bold" : "normal"} variant="outline" size="sm" marginTop="1vh" onClick={() => setIsOpen(!isOpen)} borderWidth={0}>
           <Text>{isActive ? getStatisticsName(): "Statistics"}</Text>
@@ -38,7 +38,7 @@ const StatisticsSelector: FC = () => {
       <Portal>
         <Menu.Positioner>
           <MotionComponent duration={duration}>
-            <Menu.Content zIndex="3">
+            <Menu.Content >
             <Menu.Item value="age">
               <NavLink to="/statistics/age">Age Statistics</NavLink>
             </Menu.Item>

@@ -1,17 +1,13 @@
-# HW #47 Definition
-## Auth data flows and rendered components
-### userData is null
-#### Navigator should show only Login link
-### userData is data of the user with role USER
-#### Navigator should show the following components
-- Home (without delete buttons and Edit controls) <br>
-- Logout <br>
-- Statistics 
-### userData is data of the user with role ADMIN
-#### Navigator should show the following components
-- Home (with delete buttons and Edit controls) <br>
-- Add Employee <br>
-- Logout <br>
-- Statistics
-## Update of ApiClientJsonServer
-### the method "addEmployee" should add into Employee object the property "userId" with value "ADMIN"
+# HW #48 Definition
+## Pagination 
+### Create Zustand EmployeesPaginationStore and appropriate hook containing following properties
+count <br>
+page <br>
+setCount <br>
+setPage 
+### Add property pageSize (number employees on one page) inside configuration JSON file config/employees-config.json (with value 6)
+### Build separate EmployeesPaginator component based on the example https://chakra-ui.com/docs/components/pagination?page=10#data-driven 
+### Add EmployeesPaginator component inside HomePage
+### Integrate EmployeesTable with EmployeesPaginator
+#### consider using the method "slice"
+#### Note: ApiClientJsonServer and whatever related to the Server data using @tanstack/react-query (useQuery, useMutation) shouldn't be updated

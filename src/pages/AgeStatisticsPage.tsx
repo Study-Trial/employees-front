@@ -4,11 +4,8 @@ import { useQuery } from "@tanstack/react-query"
 import apiClient from "../services/ApiClientJsonServer"
 import Statistics from "../components/Statistics"
 import { getAge } from "../util/functions"
-import { useAuthData } from "../state-management/store"
-import { Navigate } from "react-router-dom"
 
 const AgeStatisticsPage = () => {
-  const role = useAuthData(s => s.userData?.role);
  const {data: employees} = useQuery<Employee[], AxiosError>({
      queryKey: ["employees"],
      queryFn: () => apiClient.getAll(),
@@ -16,11 +13,7 @@ const AgeStatisticsPage = () => {
    })
  
    return (
-    <>
-    {role ?
-    <Statistics numbers={employees?.map(e => getAge(e.birthDate)) || []} interval={10} label={'Age'} ></Statistics>
-    : <Navigate to="/login" />}
-    </>
+     <Statistics numbers={employees?.map(e => getAge(e.birthDate)) || []} interval={10} label={'Age'} ></Statistics>
    )
  }
 

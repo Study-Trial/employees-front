@@ -1,16 +1,18 @@
-import { Button, HStack } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { useAuthData } from '../state-management/store'
 import apiClient from '../services/ApiClientJsonServer';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 const LogoutPage = () => {
     const logout = useAuthData(s => s.logout);
-    const navigate = useNavigate();
+    const [navigateLogin, setNavigateLogin] = useState(false)
     apiClient.setToken("");
   return (
-    <HStack justifyContent={"center"} p={"10vh"}>
-    <Button onClick={() => {logout(); navigate("/login")}}>Logout</Button>
-    </HStack>
+    <>
+    {navigateLogin ? <Navigate to="/login" /> : <Button onClick={() => {logout(); setNavigateLogin(true)}}>Logout</Button>}
+    </>
+    
   )
 }
 

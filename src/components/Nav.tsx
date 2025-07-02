@@ -5,21 +5,16 @@ import StatisticsSelector from '../pages/StatisticsSelector'
 import { useAuthData } from '../state-management/store'
 
 const Nav = () => {
-  const role = useAuthData(s => s.userData?.role);
+  const userData = useAuthData(s => s.userData);
   return (
-    <>
-    {role ? <HStack justifyContent={"space-around"} marginLeft={"4vw"} p={"1rem"}>
-        <RouterLink to="/home"> <Text>Home</Text></RouterLink>
-        {role === "admin" && <RouterLink to="/add"> <Text>Add Employee</Text></RouterLink>}
-        <StatisticsSelector></StatisticsSelector>
-        <RouterLink to="/logout"><Text>Logout</Text></RouterLink>
+    <HStack justifyContent={"space-between"} marginLeft={"4vw"}>
+        {!!userData && <RouterLink to="/"> <Text>Home</Text></RouterLink>}
+       {userData?.role === "ADMIN" &&< RouterLink to="/add"> <Text>Add Employee</Text></RouterLink>}
+        {!userData && <RouterLink to="/login"><Text>Login</Text></RouterLink>}
+        {!!userData && <RouterLink to="/logout"><Text>Logout</Text></RouterLink>}
+        {!!userData && <StatisticsSelector></StatisticsSelector>}
         <ColorModeButton></ColorModeButton>
     </HStack>
-    : <HStack justifyContent={"space-around"} marginLeft={"4vw"} p={"1rem"}>
-        <RouterLink to="/login"><Text>Login</Text></RouterLink>
-    </HStack>
-    }
-    </>
   )
 }
 

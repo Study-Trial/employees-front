@@ -1,7 +1,5 @@
-import { create } from 'zustand'
+import {create} from 'zustand'
 import { UserData } from '../services/AuthClient';
-import { persist } from 'zustand/middleware';
-
 interface EmployeeFilters {
     department: string | null;
     salaryFrom: number | null;
@@ -20,42 +18,34 @@ interface AuthData {
     logout: () => void;
 }
 const useEmployeeFilters = create<EmployeeFilters>(set => ({
-    department: null,
-    salaryFrom: null,
-    salaryTo: null,
-    ageFrom: null,
-    ageTo: null,
-    setAgeFrom: (ageFrom) => set({
-        ageFrom
-    }),
-    setAgeTo: (ageTo) => set({
-        ageTo
-    }),
-    setSalaryFrom: (salaryFrom) => set({
-        salaryFrom
-    }),
-    setSalaryTo: (salaryTo) => set({
-        salaryTo
-    }),
-    setDepartment: (department) => set({
-        department
-    })
+department: null,
+salaryFrom: null,
+salaryTo: null,
+ageFrom: null,
+ageTo: null,
+setAgeFrom: (ageFrom) => set({
+    ageFrom
+}),
+setAgeTo: (ageTo) => set({
+    ageTo
+}),
+setSalaryFrom: (salaryFrom) => set ({
+    salaryFrom
+}),
+setSalaryTo: (salaryTo) => set({
+    salaryTo
+}),
+setDepartment: (department) => set({
+    department
+})
 }));
-export const useAuthData = create<AuthData>()(
-    persist(
-        (set, get, api) => ({
-            userData: null,
-            login: (userData) => set({
-                userData
-            }),
-            logout: () => {
-                set({userData: null});
-                get().userData = null;
-                api.persist.clearStorage();
-            }
-        }),
-        {
-            name: 'auth-storage'
-        }
-    ))
+export const useAuthData = create<AuthData>(set => ({
+    userData: null,
+    login: (userData) => set({
+       userData
+    }),
+    logout: () => set({
+        userData: null
+    })
+}))
 export default useEmployeeFilters
