@@ -1,7 +1,7 @@
 import { MutationFunction, useQuery } from "@tanstack/react-query";
 import { Employee, SearchObject } from "../model/dto-types";
 import apiClient from "../services/ApiClientJsonServer";
-import { Avatar, Spinner, Stack, Table, Text, Button} from "@chakra-ui/react";
+import { Avatar, Spinner, Stack, Table, Button} from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useColorModeValue } from "../components/ui/color-mode";
 import { FC } from "react";
@@ -9,11 +9,17 @@ import useEmployeesMutation from "../hooks/useEmployeesMutation";
 import EditField from "./EditField";
 import useEmployeeFilters, { useAuthData } from "../state-management/store";
 import _ from 'lodash'
+import { usePagination } from "../state-management/EmployeesPaginationStore";
+import employeesConfig from '../../config/employees-config.json'
+import { EmployeesPaginator } from "./EmployeesPaginator";
+
 interface Props {
   deleteFn: MutationFunction,
   updateFn: MutationFunction
 }
 const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
+  const pageSize = employeesConfig.pageSize
+  const page = usePagination(s => s.page)
   const {department, salaryFrom, salaryTo, ageFrom, ageTo} = useEmployeeFilters();
   const userData = useAuthData(s => s.userData);
   let searchObj: SearchObject | undefined = {};
@@ -74,7 +80,7 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body  zIndex="-100">
-                  {employees?.map((empl) => (
+                  {employees?.slice((page-1)*pageSize, page*pageSize).map((empl) => (
                     <Table.Row key={empl.id} >
                       <Table.Cell hideBelow={"md"}>
                         <Avatar.Root shape="full" size="lg">
@@ -97,10 +103,12 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
                       </Table.Cell>}
                     </Table.Row>
                   ))}
+                  
                 </Table.Body>
               </Table.Root>
             </Table.ScrollArea>
           </Stack>
+          {employees && <EmployeesPaginator employees={employees} />}
         </>
     </>
   );

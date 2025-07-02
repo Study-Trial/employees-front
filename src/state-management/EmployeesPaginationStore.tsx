@@ -1,0 +1,14 @@
+import {create} from 'zustand'
+
+interface Pagination {
+    count: number;
+    page: number;
+    setCount: (count: number) => void;
+    setPage: (page: number) => void;
+}
+export const usePagination = create<Pagination>(set => ({
+    count: 0,
+    page: 1,
+    setCount: (count) => set({count}),
+    setPage: (page) => set({page})
+}))

@@ -3,8 +3,9 @@ import { VStack, Text, IconButton, HStack} from "@chakra-ui/react";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
-
+import { usePagination } from "../state-management/EmployeesPaginationStore";
 import useEmployeeFilters from "../state-management/store";
+
 interface Props {
     title: string;
     min: number;
@@ -18,6 +19,7 @@ const RangeFilter: FC<Props> = ({title, min, max}) => {
   const setTo = useEmployeeFilters(s => title === "salary" ? s.setSalaryTo: s.setAgeTo);
   const [fromValue, setFromValue] = useState(from);
   const [toValue, setToValue] = useState(to);
+  const setPage = usePagination(s => s.setPage)
   
   const onReset = () => {
             setFrom(min);
@@ -29,8 +31,9 @@ const RangeFilter: FC<Props> = ({title, min, max}) => {
           }
   const onSubmit = () => {
             setFrom(fromValue);
-            setTo(toValue)
+            setTo(toValue);
             setEditing(false);
+            setPage(1)
           }
   const onChangeFrom = (value: number) => {
     if(value >= min && value < toValue) {
