@@ -4,7 +4,8 @@ import { Updater } from '../services/ApiClient'
 import apiClient from '../services/ApiClientJsonServer'
 import Filters from '../components/Filters'
 import { useAuthData } from '../state-management/store'
-import { EmployeesPaginator } from '../components/EmployeesPaginator'
+import EmployeesPaginiator from '../components/EmployeesPaginiator'
+
 
 const HomePage = () => {
   const userData = useAuthData(s => s.userData);
@@ -15,7 +16,7 @@ const HomePage = () => {
         <Filters></Filters>
         <EmployeesTable deleteFn={(id)=>apiClient.deleteEmployee(id as string)}
         updateFn = {(updater) => apiClient.updateEmployee(updater as Updater)}></EmployeesTable>
-        <EmployeesPaginator/>
+        <EmployeesPaginiator></EmployeesPaginiator>
       </Stack>
       }
     </>

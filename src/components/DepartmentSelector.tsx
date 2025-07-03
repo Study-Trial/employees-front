@@ -10,7 +10,7 @@ const DepartmentSelector: FC = () => {
    const [isOpen, setIsOpen] =  useState<boolean>(false);
    const department = useEmployeeFilters(s=>s.department);
    const setDepartment = useEmployeeFilters(s=>s.setDepartment);
-
+   
   return (
     <>
     

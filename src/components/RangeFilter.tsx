@@ -3,8 +3,8 @@ import { VStack, Text, IconButton, HStack} from "@chakra-ui/react";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { MdClose } from "react-icons/md";
-import useEmployeeFilters from "../state-management/store";
 
+import useEmployeeFilters from "../state-management/store";
 interface Props {
     title: string;
     min: number;
@@ -29,7 +29,7 @@ const RangeFilter: FC<Props> = ({title, min, max}) => {
           }
   const onSubmit = () => {
             setFrom(fromValue);
-            setTo(toValue);
+            setTo(toValue)
             setEditing(false);
           }
   const onChangeFrom = (value: number) => {
