@@ -4,14 +4,12 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import MotionComponent from './MotionComponent';
 import {departments} from '../../config/employees-config.json'
 import useEmployeeFilters from '../state-management/store';
-import { usePagination } from '../state-management/EmployeesPaginationStore';
 
 const duration=0.7;
 const DepartmentSelector: FC = () => {
    const [isOpen, setIsOpen] =  useState<boolean>(false);
    const department = useEmployeeFilters(s=>s.department);
    const setDepartment = useEmployeeFilters(s=>s.setDepartment);
-   const setPage = usePagination(s => s.setPage)
 
   return (
     <>
@@ -30,9 +28,9 @@ const DepartmentSelector: FC = () => {
           <MotionComponent duration={duration}>
             <Menu.Content>
             <Menu.Item key={"department"} value={""}
-               onClick={() => {setDepartment(null); setIsOpen(false); setPage(1)}}>All Departments</Menu.Item>
+               onClick={() => {setDepartment(null); setIsOpen(false)}}>All Departments</Menu.Item>
               {departments.map(d => <Menu.Item key={d} value={d}
-               onClick={() => {setDepartment(d); setIsOpen(false); setPage(1)}}>{d}</Menu.Item>)}
+               onClick={() => {setDepartment(d); setIsOpen(false)}}>{d}</Menu.Item>)}
             </Menu.Content>
           </MotionComponent>
         </Menu.Positioner>

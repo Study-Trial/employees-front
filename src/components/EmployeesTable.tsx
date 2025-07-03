@@ -4,7 +4,7 @@ import apiClient from "../services/ApiClientJsonServer";
 import { Avatar, Spinner, Stack, Table, Button} from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useColorModeValue } from "../components/ui/color-mode";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import useEmployeesMutation from "../hooks/useEmployeesMutation";
 import EditField from "./EditField";
 import useEmployeeFilters, { useAuthData } from "../state-management/store";
@@ -20,6 +20,7 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
   const pageSize = employeesConfig.pageSize
   const page = usePagination(s => s.page)
   const setCount = usePagination(s => s.setCount)
+  const setPage = usePagination(s => s.setPage)
   const {department, salaryFrom, salaryTo, ageFrom, ageTo} = useEmployeeFilters();
   const userData = useAuthData(s => s.userData);
   let searchObj: SearchObject | undefined = {};
@@ -48,7 +49,14 @@ const EmployeesTable:FC<Props> = ({deleteFn, updateFn}) => {
   const mutationDel = useEmployeesMutation(deleteFn);
   const mutationUpdate = useEmployeesMutation(updateFn);
   const bg = useColorModeValue("red.500", "red.200");
-  setCount(employees?.length ?? 0)
+  useEffect(() => {
+    const employeesCount = employees?.length ?? 0;
+    setCount(employeesCount);
+    if (employeesCount < (page-1)*pageSize) {
+      setPage(1)
+    }
+  }, [employees])
+
   return (
     <>
      
