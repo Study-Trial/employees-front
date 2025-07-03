@@ -5,6 +5,7 @@ import apiClient from '../services/ApiClientJsonServer'
 import Filters from '../components/Filters'
 import { useAuthData } from '../state-management/store'
 import EmployeesPaginiator from '../components/EmployeesPaginiator'
+import { SearchObject } from '../model/dto-types'
 
 
 const HomePage = () => {
@@ -15,7 +16,8 @@ const HomePage = () => {
       <Stack>
         <Filters></Filters>
         <EmployeesTable deleteFn={(id)=>apiClient.deleteEmployee(id as string)}
-        updateFn = {(updater) => apiClient.updateEmployee(updater as Updater)}></EmployeesTable>
+        updateFn = {(updater) => apiClient.updateEmployee(updater as Updater)}
+        queryFn = {(searchObject) => apiClient.getAll(searchObject as SearchObject)}></EmployeesTable>
         <EmployeesPaginiator></EmployeesPaginiator>
       </Stack>
       }

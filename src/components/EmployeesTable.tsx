@@ -1,6 +1,5 @@
 import { MutationFunction, useQuery } from "@tanstack/react-query";
 import { Employee, SearchObject } from "../model/dto-types";
-import apiClient from "../services/ApiClientJsonServer";
 import { Avatar, Stack, Table } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { FC, useEffect, useMemo } from "react";
@@ -14,9 +13,11 @@ import DeletionButton from "./DeletionButton";
 
 interface Props {
   deleteFn: MutationFunction,
-  updateFn: MutationFunction
+  updateFn: MutationFunction,
+  queryFn: (searchObj: SearchObject) => Promise<Employee[]>
 }
-const EmployeesTable: FC<Props> = ({ deleteFn, updateFn }) => {
+
+const EmployeesTable: FC<Props> = ({ deleteFn, updateFn, queryFn }) => {
   const { department, salaryFrom, salaryTo, ageFrom, ageTo } = useEmployeeFilters();
   const userData = useAuthData(s => s.userData);
   let searchObj: SearchObject | undefined = {};
@@ -36,7 +37,7 @@ const EmployeesTable: FC<Props> = ({ deleteFn, updateFn }) => {
     isLoading,
   } = useQuery<Employee[], AxiosError>({
     queryKey,
-    queryFn: () => apiClient.getAll(searchObj),
+    queryFn: () => queryFn(searchObj || {}),
     staleTime: 3600_000
   });
   if (error) {
@@ -86,11 +87,7 @@ const EmployeesTable: FC<Props> = ({ deleteFn, updateFn }) => {
         >
           <Table.Root size="sm" stickyHeader>
             <Table.Header>
-            
-            
             <Table.Row bg="bg.subtle" zIndex="0">
-                
-            
             <Table.ColumnHeader hideBelow={"md"}></Table.ColumnHeader>
                 <Table.ColumnHeader >Full Name</Table.ColumnHeader>
                 <Table.ColumnHeader>Department</Table.ColumnHeader>
@@ -98,13 +95,10 @@ const EmployeesTable: FC<Props> = ({ deleteFn, updateFn }) => {
                 <Table.ColumnHeader hideBelow="md">Birthday</Table.ColumnHeader>
                 {userData?.role === "ADMIN" && <Table.ColumnHeader></Table.ColumnHeader>}
               </Table.Row>
-
             </Table.Header>
             {isLoading ? <SkeletonLoader itemsCount={pageSize} /> :
             <>
-            
             <Table.Body zIndex="-100">
-            
               {employees && getEmployeesOnPage(employees).map((empl) => (
                   <Table.Row key={empl.id} >
                     <Table.Cell hideBelow={"md"}>
